@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pradeep Kottaiswamy — IAM & Security Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c14;
+      --surface: #0f1623;
+      --card: #131c2e;
+      --border: rgba(96,165,250,0.12);
+      --accent: #3b82f6;
+      --accent2: #06b6d4;
+      --accent3: #8b5cf6;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --heading: #f8fafc;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(8,12,20,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    nav ul {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 8rem 4rem 4rem;
+      overflow: hidden;
+    }
+
+    /* Animated background mesh */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+
+    .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -10%; left: -5%; animation-delay: 0s; }
+    .orb-2 { width: 400px; height: 400px; background: var(--accent3); bottom: 0; right: 10%; animation-delay: -4s; }
+    .orb-3 { width: 300px; height: 300px; background: var(--accent2); top: 30%; right: 30%; animation-delay: -8s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    .hero-greeting {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--heading);
+      margin-bottom: 1.4rem;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero-greeting .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.75;
+      margin-bottom: 2.4rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      padding: 0.8rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 24px rgba(59,130,246,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 36px rgba(59,130,246,0.5);
+    }
+
+    .btn-ghost {
+      padding: 0.8rem 2rem;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: fadeIn 1s 1s ease both;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollLine 2s ease infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── SECTIONS COMMON ── */
+    section { position: relative; z-index: 1; }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 4rem;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .section-line {
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 1.05rem;
+    }
+
+    .about-text p strong { color: var(--text); }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      transition: border-color 0.3s;
+    }
+
+    .stat-card:hover { border-color: var(--accent); }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .about-right { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* Hobbies */
+    .hobbies-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 1rem;
+    }
+
+    .hobbies-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hobby-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      transition: all 0.25s;
+    }
+
+    .hobby-pill:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    .hobby-icon { font-size: 1.1rem; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .skill-group:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .skill-group-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .skill-group-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.18);
+      color: #93c5fd;
+      padding: 0.25rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--surface); }
+
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent3), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -2.9rem;
+      top: 0.4rem;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .job-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    .job-date {
+      font-size: 0.82rem;
+      color: var(--accent2);
+      background: rgba(6,182,212,0.08);
+      border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 999px;
+      padding: 0.25rem 0.8rem;
+      white-space: nowrap;
+    }
+
+    .job-company {
+      font-size: 0.92rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .job-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .job-bullets li {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .job-bullets li::before {
+      content: '▹';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    /* ── CERTS ── */
+    #certifications { background: var(--bg); }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    .cert-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .cert-card:hover::before { transform: scaleX(1); }
+
+    .cert-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+    .cert-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.4rem;
+    }
+
+    .cert-issuer {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+
+    .cert-date { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--surface); }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      transition: border-color 0.3s;
+    }
+
+    .edu-card:hover { border-color: var(--accent3); }
+
+    .edu-degree {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--heading);
+      margin-bottom: 0.3rem;
+    }
+
+    .edu-school {
+      font-size: 0.9rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .edu-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .edu-cgpa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.2);
+      color: #a78bfa;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-text p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.4rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.25s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .contact-link-icon { font-size: 1.3rem; }
+
+    .contact-link-info { display: flex; flex-direction: column; }
+    .contact-link-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .contact-link-value { font-size: 0.95rem; font-weight: 500; }
+
+    /* form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .form-group label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      outline: none;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p { font-size: 0.85rem; color: var(--muted); }
+    footer span { color: var(--accent); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.5rem; }
+      .section-inner { padding: 4rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .about-grid, .contact-wrapper, .edu-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .skills-grid, .certs-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      nav ul { display: none; }
+      .skills-grid, .certs-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">PK<span>.</span></div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Available for Opportunities
+      </div>
+      <h1 class="hero-greeting">
+        Hey, I'm Pradeep.<br>
+        <span class="line2">I keep identities safe</span><br>
+        and systems running.
+      </h1>
+      <p class="hero-sub">
+        An IAM & Security Analyst who lives at the intersection of trust, access, and resilience. I make sure the right people get in — and the wrong ones don't.
+      </p>
+      <div class="hero-cta">
+        <a href="#experience" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p class="section-label">About Me</p>
+          <h2 class="section-title">Security isn't a product — it's a mindset.</h2>
+          <div class="section-line"></div>
+          <p>I'm Pradeep, an IAM & IT Operations Analyst based in Bengaluru with <strong>3+ years</strong> of hands-on experience building secure, compliant, and resilient identity ecosystems. My work revolves around making access management seamless for users — while being ironclad from a security standpoint.</p>
+          <p>From onboarding a new hire's first login to hunting down a suspicious access anomaly at 3 AM, I thrive in the 24×7 world of security operations. I believe good security is invisible to the people it protects, and my goal is to keep it that way.</p>
+          <p>When I'm not deep in Active Directory or chasing JSOX audit trails, I'm either on a cricket pitch, planning my next travel adventure, or binge-watching a new series.</p>
+          <div class="about-stats">
+            <div class="stat-card">
+              <div class="stat-number">3+</div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">95%</div>
+              <div class="stat-label">CSAT Rating</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">900+</div>
+              <div class="stat-label">AD Accounts Managed</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">99.9%</div>
+              <div class="stat-label">Server Uptime</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-right reveal">
+          <div>
+            <p class="hobbies-title">Beyond the Terminal 🎯</p>
+            <div class="hobbies-grid">
+              <div class="hobby-pill"><span class="hobby-icon">✈️</span> Travelling</div>
+              <div class="hobby-pill"><span class="hobby-icon">🎬</span> Movies & Series</div>
+              <div class="hobby-pill"><span class="hobby-icon">🏏</span> Cricket</div>
+              <div class="hobby-pill"><span class="hobby-icon">🏐</span> Volleyball</div>
+              <div class="hobby-pill"><span class="hobby-icon">🎯</span> Carrom</div>
+            </div>
+          </div>
+          <div>
+            <p class="hobbies-title">Currently Pursuing 📚</p>
+            <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;">
+              <div style="font-size:0.9rem;color:var(--muted);margin-bottom:0.3rem;">MCA — Jain University</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--heading);margin-bottom:0.5rem;">Master of Computer Applications</div>
+              <div style="font-size:0.85rem;color:var(--accent);">CGPA 9.6 / 10.0 · Jan 2024 – Jan 2026</div>
+            </div>
+          </div>
+          <div>
+            <p class="hobbies-title">Location 📍</p>
+            <div style="font-size:0.95rem;color:var(--muted);">Bengaluru, Karnataka, India</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner">
+      <p class="section-label reveal">Technical Arsenal</p>
+      <h2 class="section-title reveal">Skills & Expertise</h2>
+      <div class="section-line reveal"></div>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <div class="skill-group-icon">🔐</div>
+          <div class="skill-group-title">Identity & Access Management</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Active Directory</span>
+            <span class="skill-tag">Okta</span>
+            <span class="skill-tag">LDAP</span>
+            <span class="skill-tag">RBAC</span>
+            <span class="skill-tag">SSO</span>
+            <span class="skill-tag">MFA</span>
+            <span class="skill-tag">SAML</span>
+            <span class="skill-tag">JML Lifecycle</span>
+            <span class="skill-tag">Conditional Access</span>
+            <span class="skill-tag">Least Privilege</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-icon">📡</div>
+          <div class="skill-group-title">Security Monitoring</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Splunk (SIEM)</span>
+            <span class="skill-tag">New Relic</span>
+            <span class="skill-tag">Zabbix</span>
+            <span class="skill-tag">BigPanda</span>
+            <span class="skill-tag">AWS CloudWatch</span>
+            <span class="skill-tag">Incident Triage</span>
+            <span class="skill-tag">Log Analysis</span>
+            <span class="skill-tag">Root Cause Analysis</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-icon">📋</div>
+          <div class="skill-group-title">Compliance & Audit</div>
+          <div class="skill-tags">
+            <span class="skill-tag">SOX Compliance</span>
+            <span class="skill-tag">JSOX Compliance</span>
+            <span class="skill-tag">Access Remediation</span>
+            <span class="skill-tag">IT Controls</span>
+            <span class="skill-tag">Audit Documentation</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-icon">⚙️</div>
+          <div class="skill-group-title">Scripting & Automation</div>
+          <div class="skill-tags">
+            <span class="skill-tag">PowerShell</span>
+            <span class="skill-tag">Bash</span>
+            <span class="skill-tag">Postman API</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-icon">🖥️</div>
+          <div class="skill-group-title">Systems & Platforms</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Linux / Unix</span>
+            <span class="skill-tag">Windows Server</span>
+            <span class="skill-tag">Salesforce CRM</span>
+            <span class="skill-tag">Google Workspace</span>
+            <span class="skill-tag">Microsoft Office</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-group-icon">🗂️</div>
+          <div class="skill-group-title">ITSM & Documentation</div>
+          <div class="skill-tags">
+            <span class="skill-tag">ServiceNow ITSM</span>
+            <span class="skill-tag">Jira</span>
+            <span class="skill-tag">Confluence</span>
+            <span class="skill-tag">SOP Creation</span>
+            <span class="skill-tag">SLA Management</span>
+            <span class="skill-tag">Security Matrices</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-inner">
+      <p class="section-label reveal">Career Journey</p>
+      <h2 class="section-title reveal">Work Experience</h2>
+      <div class="section-line reveal"></div>
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="job-header">
+            <div class="job-title">Production Operations Associate Analyst</div>
+            <div class="job-date">April 2024 – Present</div>
+          </div>
+          <div class="job-company">News Corp India · Bengaluru, India</div>
+          <ul class="job-bullets">
+            <li>Provided advanced L2 IAM and security operations support for Active Directory in a 24×7 environment, proactively monitoring alerts and ensuring compliant identity services.</li>
+            <li>Managed end-to-end JML Lifecycle (Joiner/Mover/Leaver) including provisioning and de-provisioning across Okta and Active Directory for enterprise apps like Salesforce CRM, Adpoint, and Methode/CHP.</li>
+            <li>Administered MFA, Conditional Access policies, and Enterprise Application assignments; enforced least-privilege and RBAC policies across all user accounts.</li>
+            <li>Processed high-volume access provisioning and deactivation requests via ServiceNow ITSM within agreed SLAs with complete audit-ready documentation.</li>
+            <li>Identified and escalated suspicious access activity and security incidents with detailed diagnostics, supporting incident response and investigations.</li>
+            <li>Maintained SOPs, KB articles, and access documentation; collected evidence for SOX audit compliance and supported access remediation activities.</li>
+            <li>Collaborated with HR, IT, and Security teams across global time zones — maintaining a consistent <strong style="color:var(--accent)">95% CSAT rating</strong>.</li>
+          </ul>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" style="background:var(--accent3);box-shadow:0 0 0 3px rgba(139,92,246,0.3)"></div>
+          <div class="job-header">
+            <div class="job-title">Analyst – Security Operations</div>
+            <div class="job-date">Nov 2022 – Dec 2023</div>
+          </div>
+          <div class="job-company">DXC Technology · Bengaluru, India</div>
+          <ul class="job-bullets">
+            <li>Provided comprehensive L1 security operations and IAM support — managing provisioning, de-provisioning, and access modifications for over 900 Active Directory and Linux/Unix accounts.</li>
+            <li>Executed JML access lifecycle processes across Active Directory and Linux/Unix environments in alignment with RBAC and least-privilege policies.</li>
+            <li>Administered 50+ Linux/Unix and Windows servers, achieving <strong style="color:var(--accent)">99.9% uptime</strong> and reducing system downtime by 30% through proactive patching and vulnerability remediation.</li>
+            <li>Supported JSOX compliance initiatives via internal security audits, IT controls documentation, and timely remediation of access findings.</li>
+            <li>Maintained audit-ready records within the ServiceNow ITSM ticketing system and updated security matrices accordingly.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-inner">
+      <p class="section-label reveal">Credentials</p>
+      <h2 class="section-title reveal">Certifications</h2>
+      <div class="section-line reveal"></div>
+      <div class="certs-grid">
+        <div class="cert-card reveal">
+          <div class="cert-icon">☁️</div>
+          <div class="cert-name">Azure Fundamentals (AZ-900)</div>
+          <div class="cert-issuer">Microsoft</div>
+          <div class="cert-date">June 2023</div>
+        </div>
+        <div class="cert-card reveal">
+          <div class="cert-icon">🔒</div>
+          <div class="cert-name">Google Cybersecurity Professional</div>
+          <div class="cert-issuer">Google · Coursera</div>
+          <div class="cert-date">May 2024</div>
+        </div>
+        <div class="cert-card reveal">
+          <div class="cert-icon">🏢</div>
+          <div class="cert-name">Cybersecurity Analyst Job Simulation</div>
+          <div class="cert-issuer">Tata · Forage</div>
+          <div class="cert-date">March 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-inner">
+      <p class="section-label reveal">Academic Background</p>
+      <h2 class="section-title reveal">Education</h2>
+      <div class="section-line reveal"></div>
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <div style="font-size:2rem;margin-bottom:1rem;">🎓</div>
+          <div class="edu-degree">Master of Computer Applications</div>
+          <div class="edu-school">Jain University</div>
+          <div class="edu-meta">
+            <span>📅 Jan 2024 – Jan 2026</span>
+            <span>📍 Bengaluru</span>
+          </div>
+          <div class="edu-cgpa">⭐ CGPA 9.6 / 10.0</div>
+        </div>
+        <div class="edu-card reveal">
+          <div style="font-size:2rem;margin-bottom:1rem;">📖</div>
+          <div class="edu-degree">Bachelor of Computer Applications</div>
+          <div class="edu-school">Jain University</div>
+          <div class="edu-meta">
+            <span>📅 Jun 2019 – Jun 2022</span>
+            <span>📍 Bengaluru</span>
+          </div>
+          <div class="edu-cgpa">⭐ CGPA 7.7 / 10.0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <p class="section-label reveal">Let's Connect</p>
+      <h2 class="section-title reveal">Get In Touch</h2>
+      <div class="section-line reveal"></div>
+      <div class="contact-wrapper">
+        <div class="contact-text reveal">
+          <p>Whether you have an opportunity, a question, or just want to talk security — my inbox is always open. I'm currently open to new roles and collaborations.</p>
+          <p>I respond within 24 hours. Let's build something secure together.</p>
+          <div class="contact-links">
+            <a href="mailto:pradeeppradeep93472@gmail.com" class="contact-link">
+              <span class="contact-link-icon">📧</span>
+              <div class="contact-link-info">
+                <span class="contact-link-label">Email</span>
+                <span class="contact-link-value">pradeeppradeep93472@gmail.com</span>
+              </div>
+            </a>
+            <a href="tel:+919611313262" class="contact-link">
+              <span class="contact-link-icon">📱</span>
+              <div class="contact-link-info">
+                <span class="contact-link-label">Phone</span>
+                <span class="contact-link-value">+91 9611313262</span>
+              </div>
+            </a>
+            <a href="https://linkedin.com/in/pradeep-kottaiswamy" target="_blank" class="contact-link">
+              <span class="contact-link-icon">💼</span>
+              <div class="contact-link-info">
+                <span class="contact-link-label">LinkedIn</span>
+                <span class="contact-link-value">linkedin.com/in/pradeep-kottaiswamy</span>
+              </div>
+            </a>
+            <div class="contact-link" style="cursor:default;">
+              <span class="contact-link-icon">📍</span>
+              <div class="contact-link-info">
+                <span class="contact-link-label">Location</span>
+                <span class="contact-link-value">Bengaluru, Karnataka, India</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="contact-form">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input id="from_name" type="text" placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input id="from_email" type="email" placeholder="you@example.com" />
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <input id="subject" type="text" placeholder="Opportunity / Collaboration / Hello" />
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="message" rows="5" placeholder="Tell me what's on your mind..."></textarea>
+            </div>
+            <button id="send-btn" class="btn-primary" onclick="handleFormSubmit()" style="width:100%;text-align:center;">Send Message →</button>
+            <div id="form-msg" style="display:none;text-align:center;font-size:0.9rem;padding:0.6rem;border-radius:8px;margin-top:0.5rem;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 <span>Pradeep Kottaiswamy</span>. Crafted with ☕ and curiosity.</p>
+    <p>Bengaluru, India</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // Init EmailJS
+    emailjs.init('WSnzozEz8__lcRAB4'); // Public Key
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Stagger children in grids
+    document.querySelectorAll('.skills-grid, .certs-grid, .edu-grid, .about-stats').forEach(grid => {
+      grid.querySelectorAll(':scope > *').forEach((child, i) => {
+        child.style.transitionDelay = `${i * 0.1}s`;
+      });
+    });
+
+    // Contact form
+    async function handleFormSubmit() {
+      const name    = document.getElementById('from_name').value.trim();
+      const email   = document.getElementById('from_email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const btn     = document.getElementById('send-btn');
+      const msgBox  = document.getElementById('form-msg');
+
+      // Basic validation
+      if (!name || !email || !subject || !message) {
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(239,68,68,0.1)';
+        msgBox.style.border = '1px solid rgba(239,68,68,0.3)';
+        msgBox.style.color = '#f87171';
+        msgBox.textContent = '⚠️ Please fill in all fields before sending.';
+        return;
+      }
+
+      // Sending state
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      try {
+        await emailjs.send('service_m74jgad', 'template_d6n3175', {
+          from_name:  name,
+          from_email: email,
+          subject:    subject,
+          message:    message,
+        });
+
+        // Success
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(6,182,212,0.1)';
+        msgBox.style.border = '1px solid rgba(6,182,212,0.3)';
+        msgBox.style.color = '#67e8f9';
+        msgBox.textContent = '✅ Message sent successfully! I\'ll get back to you soon.';
+
+        // Clear fields
+        document.getElementById('from_name').value = '';
+        document.getElementById('from_email').value = '';
+        document.getElementById('subject').value = '';
+        document.getElementById('message').value = '';
+
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = '#059669';
+
+      } catch (err) {
+        // Error
+        msgBox.style.display = 'block';
+        msgBox.style.background = 'rgba(239,68,68,0.1)';
+        msgBox.style.border = '1px solid rgba(239,68,68,0.3)';
+        msgBox.style.color = '#f87171';
+        msgBox.textContent = '❌ Something went wrong. Please try emailing directly at pradeeppradeep93472@gmail.com';
+
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    }
+  </script>
+</body>
+</html>
